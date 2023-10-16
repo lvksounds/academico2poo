@@ -4,6 +4,7 @@ using Academico.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Academico.Migrations
 {
     [DbContext(typeof(AcademicoContext))]
-    partial class AcademicoContextModelSnapshot : ModelSnapshot
+    [Migration("20231016121216_cursos-disciplinas-cursosDisciplinas")]
+    partial class cursosdisciplinascursosDisciplinas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,44 +23,6 @@ namespace Academico.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("Academico.Models.Aluno", b =>
-                {
-                    b.Property<int>("AlunoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AlunoId"), 1L, 1);
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AlunoId");
-
-                    b.ToTable("Alunos");
-                });
-
-            modelBuilder.Entity("Academico.Models.AlunoDisciplina", b =>
-                {
-                    b.Property<int?>("AlunoId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DisciplinaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Ano")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Semestre")
-                        .HasColumnType("int");
-
-                    b.HasKey("AlunoId", "DisciplinaId");
-
-                    b.HasIndex("DisciplinaId");
-
-                    b.ToTable("AlunosDisciplinas");
-                });
 
             modelBuilder.Entity("Academico.Models.Curso", b =>
                 {
@@ -158,25 +122,6 @@ namespace Academico.Migrations
                     b.ToTable("Instituicoes");
                 });
 
-            modelBuilder.Entity("Academico.Models.AlunoDisciplina", b =>
-                {
-                    b.HasOne("Academico.Models.Aluno", "Aluno")
-                        .WithMany("AlunosDisciplinas")
-                        .HasForeignKey("AlunoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Academico.Models.Disciplina", "Disciplina")
-                        .WithMany("AlunosDisciplinas")
-                        .HasForeignKey("DisciplinaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Aluno");
-
-                    b.Navigation("Disciplina");
-                });
-
             modelBuilder.Entity("Academico.Models.CursoDisciplina", b =>
                 {
                     b.HasOne("Academico.Models.Curso", "Curso")
@@ -207,11 +152,6 @@ namespace Academico.Migrations
                     b.Navigation("Instituicao");
                 });
 
-            modelBuilder.Entity("Academico.Models.Aluno", b =>
-                {
-                    b.Navigation("AlunosDisciplinas");
-                });
-
             modelBuilder.Entity("Academico.Models.Curso", b =>
                 {
                     b.Navigation("CursosDisciplinas");
@@ -219,8 +159,6 @@ namespace Academico.Migrations
 
             modelBuilder.Entity("Academico.Models.Disciplina", b =>
                 {
-                    b.Navigation("AlunosDisciplinas");
-
                     b.Navigation("CursosDisciplinas");
                 });
 
